@@ -1,0 +1,34 @@
+﻿@using Codr.Models.Posts
+@using static Codr.Models.Posts.TextStyle
+@model Post
+@foreach (var component in Model.Components) {
+    <div class="component">
+        @switch (component) {
+            case Heading h:
+                <h1>@h.Content</h1>
+                break;
+            case Image image:
+                <img src=@image.Url.ToString() />
+                break;
+            case Text text:
+
+                @foreach (var textComponent in text.Components) {
+                    <p class=@( string.Format("{0}{1}{2}{3}{4}{5}",
+                             (textComponent.Style & Bold) != None ? "bold" : "",
+                             (textComponent.Style & Underlined) != None ? " underlined" : "",
+                             (textComponent.Style & Italics) != None ? " italics" : "",
+                             (textComponent.Style & Strikethrough) != None ? " strikethrough" : "",
+                             (textComponent.Style & InlineCode) != None ? " inline_code" : "",
+                             (textComponent.Style & Spoiler) != None ? " spoiler" : ""
+                             ) )>@textComponent.Content</p>
+                        }
+                break;
+            case Link link:
+                <a href=@link.Url.ToString()>@(link.Content ?? link.Url.ToString())</a>
+                    break;
+            case Code code:
+                <pre><code class=@(code.Language?.ToString().ToLower() ?? "plaintext")></code></pre>
+                break;
+            }
+    </div>
+}

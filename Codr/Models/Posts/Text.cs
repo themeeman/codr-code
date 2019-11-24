@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Codr.Models.Posts {
-    public class Text : IEquatable<Text> {
+    public class Text : IPostComponent, IEquatable<Text> {
         public Text() { }
         public Text(List<TextComponent> components) {
             Components = components;

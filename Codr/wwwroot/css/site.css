@@ -1,1 +1,23 @@
-﻿
+﻿.bold {
+    font-weight: bold;
+}
+
+.italics {
+    font-style: italic;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.inline_code {
+
+}
+
+.spoiler {
+
+}

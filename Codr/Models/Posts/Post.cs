@@ -5,8 +5,7 @@ using System.Linq;
 namespace Codr.Models.Posts {
     public class Post : IEquatable<Post> {
         public Post() { }
-        public Post(string id, string author) {
-            Id = id;
+        public Post(string author) {
             Author = author;
         }
 
