@@ -12,7 +12,7 @@ namespace Codr.Models.Posts {
         public List<TextComponent> Components { get; private set; } = new List<TextComponent>();
 
         public override bool Equals(object? obj) {
-            if (obj is null) return false;
+            if (obj is null || !(obj is Text)) return false;
             return Equals((Text)obj);
         }
 

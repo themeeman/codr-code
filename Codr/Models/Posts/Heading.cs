@@ -9,7 +9,7 @@ namespace Codr.Models.Posts {
         public string Content { get; private set; } = string.Empty;
 
         public override bool Equals(object? obj) {
-            if (obj is null) return false;
+            if (obj is null || !(obj is Heading)) return false;
             return Equals((Heading)obj);
         }
 

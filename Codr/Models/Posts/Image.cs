@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Codr.Models.Posts {
     public class Image : IPostComponent, IEquatable<Image> {
@@ -13,7 +9,7 @@ namespace Codr.Models.Posts {
         public Uri Url { get; private set; }
 
         public override bool Equals(object? obj) {
-            if (obj is null) return false;
+            if (obj is null || !(obj is Image)) return false;
             return Equals((Image)obj);
         }
 

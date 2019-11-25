@@ -13,13 +13,12 @@ namespace Codr.Models.Posts {
         public string Author { get; private set; } = string.Empty;
         public DateTime Created { get; private set; } = DateTime.Now;
         public HashSet<string> LikedBy { get; private set; } = new HashSet<string>();
-        [Newtonsoft.Json.JsonIgnore]
         public List<IPostComponent> Components { get; private set; } = new List<IPostComponent>();
         public HashSet<string> Comments { get; private set; } = new HashSet<string>();
         public int Likes => LikedBy.Count();
 
         public override bool Equals(object? obj) {
-            if (obj is null) return false;
+            if (obj is null || !(obj is Post)) return false;
             return Equals((Post)obj);
         }
 

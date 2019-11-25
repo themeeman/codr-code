@@ -1,7 +1,9 @@
-﻿@{
+﻿@using Codr.Models.Posts;
+@model Post
+@{
     ViewData["Title"] = "Home";
 }
 
 @{
-    await Html.RenderPartialAsync("_Post.cshtml");
+    await Html.RenderPartialAsync("~/Views/_Post.cshtml");
 }

@@ -12,7 +12,7 @@ namespace Codr.Models.Posts {
         public TextStyle Style { get; private set; } = TextStyle.None;
 
         public override bool Equals(object? obj) {
-            if (obj is null) return false;
+            if (obj is null || !(obj is TextComponent)) return false;
             return Equals((TextComponent)obj);
         }
 

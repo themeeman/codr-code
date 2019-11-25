@@ -25,9 +25,9 @@ namespace Codr {
             }));
             post.Components.Add(new Code(@"#include <iostream>
 int main() {
-    std::cout << ""This is C++ Code""
+    std::cout << ""This is C++ Code\n"";
 }", Models.Language.CPP));
-            string s = Newtonsoft.Json.JsonConvert.SerializeObject(((Text)post.Components[1]));
+            string s = Newtonsoft.Json.JsonConvert.SerializeObject(post);
 
             session.Store(post);
             session.SaveChanges();
