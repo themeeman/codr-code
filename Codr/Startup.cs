@@ -1,3 +1,5 @@
+using Codr.Models.Posts;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +16,22 @@ namespace Codr {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+            using var session = DocumentStoreHolder.Store.OpenSession();
+            var post = new Post(author: "12345678");
+            post.Components.Add(new Heading(content: "Hello World"));
+            post.Components.Add(new Text(new List<TextComponent> {
+                new TextComponent("Text can be "),
+                new TextComponent("bold and italics", TextStyle.Bold | TextStyle.Italics),
+            }));
+            post.Components.Add(new Code(@"#include <iostream>
+int main() {
+    std::cout << ""This is C++ Code""
+}", Models.Language.CPP));
+            string s = Newtonsoft.Json.JsonConvert.SerializeObject(((Text)post.Components[1]));
+
+            session.Store(post);
+            session.SaveChanges();
+
             services.AddControllersWithViews();
         }
 

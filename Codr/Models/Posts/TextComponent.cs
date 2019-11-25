@@ -3,7 +3,7 @@
 namespace Codr.Models.Posts {
     public class TextComponent : IEquatable<TextComponent> {
         public TextComponent() { }
-        public TextComponent(string content, TextStyle style) {
+        public TextComponent(string content, TextStyle style = TextStyle.None) {
             Content = content;
             Style = style;
         }

@@ -2,7 +2,7 @@
 
 namespace Codr.Models.Posts {
     public class Heading : IPostComponent, IEquatable<Heading> {
-        public Heading(string content, byte size) {
+        public Heading(string content) {
             Content = content;
         }
 
