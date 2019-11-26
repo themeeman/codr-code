@@ -27,7 +27,6 @@ namespace Codr {
 int main() {
     std::cout << ""This is C++ Code\n"";
 }", Models.Language.CPP));
-            string s = Newtonsoft.Json.JsonConvert.SerializeObject(post);
 
             session.Store(post);
             session.SaveChanges();
