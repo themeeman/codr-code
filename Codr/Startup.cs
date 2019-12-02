@@ -24,10 +24,11 @@ namespace Codr {
                 new TextComponent("bold and italics", TextStyle.Bold | TextStyle.Italics),
             }));
             post.Components.Add(new Code(@"#include <iostream>
-int main() {
+auto main() -> int {
     std::cout << ""This is C++ Code\n"";
 }", Models.Language.CPP));
-
+            post.Components.Add(new Link("https://www.example.com/", "Example URL"));
+            post.Components.Add(new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Parque_Eagle_River%2C_Anchorage%2C_Alaska%2C_Estados_Unidos%2C_2017-09-01%2C_DD_02.jpg/1280px-Parque_Eagle_River%2C_Anchorage%2C_Alaska%2C_Estados_Unidos%2C_2017-09-01%2C_DD_02.jpg"));
             session.Store(post);
             session.SaveChanges();
 
