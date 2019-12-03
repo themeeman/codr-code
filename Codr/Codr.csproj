@@ -18,9 +18,4 @@
     <PackageReference Include="RavenDB.Client" Version="4.2.4" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-  </ItemGroup>
-
 </Project>

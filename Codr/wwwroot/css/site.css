@@ -1,0 +1,41 @@
+﻿.content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.italics {
+    font-style: italic;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.inline-code {
+    display: block;
+    font-family: monospace;
+    /*white-space: pre;*/
+    /*margin: 1em 0;*/
+}
+
+.spoiler {
+
+}
+
+.post {
+    width: 50vw;
+    height: auto;
+    word-wrap: normal;
+} 
+
+.post-image {
+    max-width: 100%;
+    height: auto;
+}
