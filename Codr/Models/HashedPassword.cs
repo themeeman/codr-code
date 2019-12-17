@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -42,6 +43,10 @@ namespace Codr.Models {
                 if (hashBytes[i + 16] != inputHash[i])
                     return false;
             return true;
+        }
+
+        public static explicit operator string(HashedPassword hashedPassword) {
+            return hashedPassword.ToString();
         }
     }
 }
