@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Codr.Models {
     public class HashedPassword {
         public string Password { get; private set; }
-        public HashedPassword(byte[] unhashedPassword) {
+        public HashedPassword(string unhashedPassword) {
+            var bytes = Encoding.Default.GetBytes(unhashedPassword);
             // Generate the salt as a byte array using a cryptographic PRNG (different each time)
-            byte[] salt = new byte[16];
+            var salt = new byte[16];
             using (var rng = new RNGCryptoServiceProvider())
                 rng.GetBytes(salt);
 
             // Generate the hash of the password using SHA 256, a secure hashing algorithm
             byte[] hash;
             using (var sha256 = SHA256.Create())
-                hash = sha256.ComputeHash(unhashedPassword);
+                hash = sha256.ComputeHash(bytes);
 
             // Combines the hash and the salt together for storage
-            byte[] hashBytes = new byte[36];
+            var hashBytes = new byte[36];
             Array.Copy(salt, 0, hashBytes, 0, 16);
             Array.Copy(hash, 0, hashBytes, 16, 20);
             // Converts the combined hash and salt to a string
@@ -25,6 +27,21 @@ namespace Codr.Models {
 
         public override string ToString() {
             return Password;
+        }
+
+        public bool Verify(string inputPassword) {
+            var inputBytes = Encoding.Default.GetBytes(inputPassword);
+            var hashBytes = Convert.FromBase64String(Password);
+            var salt = new byte[16];
+            Array.Copy(hashBytes, 0, salt, 0, 16);
+            byte[] inputHash;
+            using (var sha256 = SHA256.Create())
+                inputHash = sha256.ComputeHash(inputBytes);
+
+            for (int i = 0; i < 20; i++)
+                if (hashBytes[i + 16] != inputHash[i])
+                    return false;
+            return true;
         }
     }
 }

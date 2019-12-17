@@ -16,8 +16,10 @@ namespace Codr {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            var password = new HashedPassword(Encoding.ASCII.GetBytes("MyPassword123"));
-            var l = password.ToString().Length;
+            var password = new HashedPassword("MyPassword1234");
+            var password2 = new HashedPassword("MyPassword1234");
+            bool b = password.Verify("MyPassword1234");
+            bool b2 = password.Verify("WrongPassword");
             services.AddControllersWithViews();
         }
 

@@ -5,22 +5,14 @@ namespace Codr.Models {
     public class User : IEquatable<User> {
         public string Id { get; private set; } = string.Empty;
         public string Email { get; private set; }
-        public string Password {
-            get => password;
-            set {
-                byte[] salt;
-
-            }
-        }
-
+        public HashedPassword Password { get; set; }
         public string FirstName { get; set; }
         public string? LastName { get; set; }
         public List<string> Posts { get; private set; } = new List<string>();
         public IEnumerable<string> Friends => friends;
         private readonly HashSet<string> friends = new HashSet<string>();
-        private string password = string.Empty;
 
-        public User(string email, string password, string firstName, string? lastName = null) {
+        public User(string email, HashedPassword password, string firstName, string? lastName = null) {
             Email = email;
             Password = password;
             FirstName = firstName;
