@@ -1,5 +1,6 @@
 ﻿using Codr.Models;
 using Raven.Client.Documents.Indexes;
+using System;
 using System.Linq;
 
 namespace Codr.Data.Queries {
@@ -10,6 +11,16 @@ namespace Codr.Data.Queries {
 
         public Users_Emails() {
             Map = users => users.Select(user => new { user.Email });
+        }
+    }
+
+    class Users_Session : AbstractIndexCreationTask<User> {
+        public class Result {
+            public Guid Session { get; set; }
+        }
+
+        public Users_Session() {
+            Map = users => users.Select(user => new { user.Session });
         }
     }
 }

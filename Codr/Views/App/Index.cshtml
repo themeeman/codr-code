@@ -1,0 +1,7 @@
+﻿@using Codr.Models
+@model User
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p class="content"> Hello @Model.FirstName @(Model.LastName ?? "")</p>

@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Codr.Controllers {
     public class LoginController : Controller {
         public IActionResult Index() {
-            Response.Cookies.Append("bruh", "bruh");
+            if (Request.Cookies.ContainsKey("Session")) {
+                return Redirect("/App");
+            }
             return View();
         }
 
@@ -16,7 +18,14 @@ namespace Codr.Controllers {
         [HttpPost]
         public IActionResult Process(string email, string password) {
             using var sesh = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-            return Json(sesh.GetUserByEmail(email)?.Password.Verify(password));
+            var user = sesh.GetUserByEmail(email);
+            if (user is { } u && u.Password.Verify(password)) {
+                u.NewSession();
+                sesh.Session.SaveChanges();
+                Response.Cookies.Append("Session", u.Session.ToString());
+                return Redirect("/App");
+            }
+            return BadRequest();
         }
     }
 }

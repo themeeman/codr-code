@@ -13,6 +13,9 @@ namespace Codr.Controllers {
             public string Reason { get; set; } = string.Empty;
         }
         public IActionResult Index() {
+            if (Request.Cookies.ContainsKey("Session")) {
+                return Redirect("/App");
+            }
             return View();
         }
 
@@ -22,9 +25,11 @@ namespace Codr.Controllers {
             if (session.GetUserByEmail(email) is { })
                 return BadRequest();
 
-            session.Session.Store(new User(email, new HashedPassword(password), firstName, lastName));
+            var u = new User(email, new HashedPassword(password), firstName, lastName);
+            session.Session.Store(u);
+            Response.Cookies.Append("Session", u.Session.ToString());
             session.Session.SaveChanges();
-            return Ok();
+            return Redirect("/App");
         }
 
         [HttpGet]

@@ -9,7 +9,7 @@ namespace Codr.Models {
         public HashedPassword Password { get; set; }
         public string FirstName { get; set; }
         public string? LastName { get; set; }
-        public string? Session { get; set; }
+        public Guid Session { get; set; }
         public List<string> Posts { get; private set; } = new List<string>();
         [JsonProperty]
         public IReadOnlyCollection<string> Friends {
@@ -24,12 +24,16 @@ namespace Codr.Models {
             Password = password;
             FirstName = firstName;
             LastName = lastName;
+            Session = Guid.NewGuid();
         }
 
-        public User AddFriend(User other) {
+        public void AddFriend(User other) {
             friends.Add(other.Id);
             other.friends.Add(Id);
-            return this;
+        }
+
+        public void NewSession() {
+            Session = Guid.NewGuid();
         }
 
         public override bool Equals(object? obj) {

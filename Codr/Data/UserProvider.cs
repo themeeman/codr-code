@@ -26,6 +26,13 @@ namespace Codr.Data {
                 .OfType<User>()
                 .FirstOrDefault();
         }
+         
+        public override User? GetUserBySessionId(string id) {
+            return Session.Query<Users_Session.Result, Users_Session>()
+                .Where(u => u.Session == new Guid(id))
+                .OfType<User>()
+                .FirstOrDefault();
+        }
 
         public void Dispose() {
             Session.Dispose();

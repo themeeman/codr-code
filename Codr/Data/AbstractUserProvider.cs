@@ -6,6 +6,7 @@ namespace Codr.Data {
         public abstract User? GetUser(string id);
         public abstract Dictionary<string, User?> GetUsers(IEnumerable<string> ids);
         public abstract User? GetUserByEmail(string email);
+        public abstract User? GetUserBySessionId(string id);
         public int? FriendDistance(User start, User end) {
             if (start == end) {
                 return 0;
