@@ -1,4 +1,3 @@
-using Codr.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,10 +14,6 @@ namespace Codr {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            var password = new HashedPassword("MyPassword1234");
-            var password2 = new HashedPassword("");
-            bool b = password.Verify("MyPassword1234");
-            bool b2 = password.Verify("WrongPassword");
             services.AddControllersWithViews();
         }
 

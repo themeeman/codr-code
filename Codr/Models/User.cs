@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Codr.Models {
@@ -8,8 +9,14 @@ namespace Codr.Models {
         public HashedPassword Password { get; set; }
         public string FirstName { get; set; }
         public string? LastName { get; set; }
+        public string? Session { get; set; }
         public List<string> Posts { get; private set; } = new List<string>();
-        public IEnumerable<string> Friends => friends;
+        [JsonProperty]
+        public IReadOnlyCollection<string> Friends {
+            get => friends;
+            private set => friends.UnionWith(value);
+        }
+
         private readonly HashSet<string> friends = new HashSet<string>();
 
         public User(string email, HashedPassword password, string firstName, string? lastName = null) {
@@ -17,6 +24,12 @@ namespace Codr.Models {
             Password = password;
             FirstName = firstName;
             LastName = lastName;
+        }
+
+        public User AddFriend(User other) {
+            friends.Add(other.Id);
+            other.friends.Add(Id);
+            return this;
         }
 
         public override bool Equals(object? obj) {

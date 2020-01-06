@@ -10,19 +10,19 @@
                 <h1 class="content">@h.Content</h1>
                 break;
             case Image image:
-                <img class="post-image" src=@image.Url.ToString() />
+                <img class="post-image" src="@image.Url.ToString()" />
                 break;
             case Text text:
 
                 @foreach (var textComponent in text.Components)
                 {
                     <span class="content @( string.Format("{0}{1}{2}{3}{4}{5}",
-                        (textComponent.Style & Bold) != None ? "bold" : "",
-                        (textComponent.Style & Underlined) != None ? " underlined" : "",
-                        (textComponent.Style & Italics) != None ? " italics" : "",
-                        (textComponent.Style & Strikethrough) != None ? " strikethrough" : "",
-                        (textComponent.Style & InlineCode) != None ? " inline-code" : "",
-                        (textComponent.Style & Spoiler) != None ? " spoiler" : ""
+                        textComponent.Style.HasStyle(Bold) ? "bold" : "",
+                        textComponent.Style.HasStyle(Underlined) ? " underlined" : "",
+                        textComponent.Style.HasStyle(Italics) ? " italics" : "",
+                        textComponent.Style.HasStyle(Strikethrough) ? " strikethrough" : "",
+                        textComponent.Style.HasStyle(InlineCode) ? " inline-code" : "",
+                        textComponent.Style.HasStyle(Spoiler) ? " spoiler" : ""
                         ) )">@textComponent.Content</span>
                     }
                 break;

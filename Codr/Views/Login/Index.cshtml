@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+}
+
+<form action="/Login/Process" method="post" class="content">
+    <div class="form-container">
+        <label for="email">Email</label>
+        <input type="text" name="email" required pattern="\S+" />
+    </div>
+    <div class="form-container">
+        <label for="password">Password</label>
+        <input type="password" name="password" required pattern="\S+" />
+    </div>
+    <input type="submit" />
+</form> 

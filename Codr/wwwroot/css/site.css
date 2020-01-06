@@ -39,3 +39,49 @@
     max-width: 100%;
     height: auto;
 }
+
+#topbar {
+    width: 100vw;
+    height: 7.5vh;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    background-color: dimgrey;
+    top: 0;
+    left: 0;
+}
+
+#title {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10vh;
+    width: 25vw;
+    margin: auto;
+    font-size: 5vh;
+    text-align: center;
+}
+
+#login-box {
+    height: 7.5vh;
+    width: 10vw;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 90vw;
+    position: absolute;
+    color: white;
+}
+
+#register-box {
+    height: 7.5vh;
+    width: 10vw;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 80vw;
+    position: absolute;
+    color: white;
+}

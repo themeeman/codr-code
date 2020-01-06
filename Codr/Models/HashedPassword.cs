@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Codr.Models {
+    [JsonConverter(typeof(HashedPasswordSerializer))]
     public class HashedPassword {
         public string Password { get; private set; }
         public HashedPassword(string unhashedPassword) {
@@ -26,23 +27,26 @@ namespace Codr.Models {
             Password = Convert.ToBase64String(hashBytes);
         }
 
-        public override string ToString() {
-            return Password;
-        }
-
         public bool Verify(string inputPassword) {
             var inputBytes = Encoding.Default.GetBytes(inputPassword);
+            // Extract the salt from the hashed password
             var hashBytes = Convert.FromBase64String(Password);
             var salt = new byte[16];
             Array.Copy(hashBytes, 0, salt, 0, 16);
+            // Hash the input using the given salt
             byte[] inputHash;
             using (var sha256 = SHA256.Create())
                 inputHash = sha256.ComputeHash(inputBytes);
 
+            // Check if the hashes match
             for (int i = 0; i < 20; i++)
                 if (hashBytes[i + 16] != inputHash[i])
                     return false;
             return true;
+        }
+
+        public override string ToString() {
+            return Password;
         }
 
         public static explicit operator string(HashedPassword hashedPassword) {
