@@ -1,0 +1,12 @@
+﻿@using Codr.Models;
+@{
+    ViewData["Title"] = "Friends";
+    var user = (User)Model.User;
+    var page = (int)Model.Page;
+}
+
+<h1 class="content">Friends</h1>
+
+@foreach (var friend in user.Friends.Skip(10 * page).Take(10)) {
+
+}

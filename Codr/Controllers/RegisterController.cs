@@ -1,17 +1,10 @@
 ﻿using Codr.Data;
 using Codr.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Codr.Controllers {
     public class RegisterController : Controller {
-        class Result {
-            public Result(string type, string reason) {
-                Type = type;
-                Reason = reason;
-            }
-            public string Type { get; set; } = string.Empty;
-            public string Reason { get; set; } = string.Empty;
-        }
         public IActionResult Index() {
             if (Request.Cookies.ContainsKey("Session")) {
                 return Redirect("/App");
@@ -27,7 +20,9 @@ namespace Codr.Controllers {
 
             var u = new User(email, new HashedPassword(password), firstName, lastName);
             session.Session.Store(u);
-            Response.Cookies.Append("Session", u.Session.ToString());
+            Response.Cookies.Append("Session", u.Session.ToString(), new CookieOptions {
+                SameSite = SameSiteMode.Lax
+            });
             session.Session.SaveChanges();
             return Redirect("/App");
         }

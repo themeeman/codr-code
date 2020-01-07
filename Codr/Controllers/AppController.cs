@@ -1,17 +1,38 @@
 ﻿using Codr.Data;
+using Codr.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 
 namespace Codr.Controllers {
     public class AppController : Controller {
-        public IActionResult Index() {
-            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-            if (Request.Cookies.TryGetValue("Session", out string id)) {
-                if (session.GetUserBySessionId(id) is { } user) {
-                    return View(user);
-                } else {
-                    Response.Cookies.Delete("Session");
+        private User? ThisUser {
+            get {
+                using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+                if (Request.Cookies.TryGetValue("Session", out string id)) {
+                    Thread.Sleep(1000); // what 
+                    return session.GetUserBySessionId(id);
                 }
+                return null;
             }
+        }
+
+        public IActionResult Index() {
+            if (ThisUser is { } u) {
+                return View(u);
+            }
+            Response.Cookies.Delete("Session");
+            return Redirect("/");
+        }
+
+        public IActionResult Friends(int page = 0) {
+            if (ThisUser is { } u) {
+                int maxPage = ((u.Friends.Count - 1) / 10) + 1;
+                if (u.Friends.Count != 0 && page > maxPage)
+                    page = maxPage;
+
+                return View(new { Page = page, User = u });
+            }
+            Response.Cookies.Delete("Session");
             return Redirect("/");
         }
     }

@@ -4,4 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<p class="content"> Hello @Model.FirstName @(Model.LastName ?? "")</p>
+<img src="@(Model.ProfilePicture ?? "~/default-profile.png")" id="profile-picture"/>
+
+<p class="content">Hello @Model.FirstName @(Model.LastName ?? "")</p>

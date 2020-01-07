@@ -1,4 +1,5 @@
 ﻿using Codr.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Codr.Controllers {
@@ -22,7 +23,9 @@ namespace Codr.Controllers {
             if (user is { } u && u.Password.Verify(password)) {
                 u.NewSession();
                 sesh.Session.SaveChanges();
-                Response.Cookies.Append("Session", u.Session.ToString());
+                Response.Cookies.Append("Session", u.Session.ToString(), new CookieOptions {
+                    SameSite = SameSiteMode.Lax
+                });
                 return Redirect("/App");
             }
             return BadRequest();

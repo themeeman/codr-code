@@ -29,7 +29,7 @@ namespace Codr.Data {
          
         public override User? GetUserBySessionId(string id) {
             return Session.Query<Users_Session.Result, Users_Session>()
-                .Where(u => u.Session == new Guid(id))
+                .Where(u => u.Session.ToString() == id)
                 .OfType<User>()
                 .FirstOrDefault();
         }

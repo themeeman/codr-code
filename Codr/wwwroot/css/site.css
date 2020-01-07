@@ -85,3 +85,17 @@
     position: absolute;
     color: white;
 }
+
+#login-box:hover {
+    background-color: #333;
+}
+
+#register-box:hover {
+    background-color: #333;
+}
+
+#profile-picture {
+    height: 100px;
+    width: 100px;
+
+}

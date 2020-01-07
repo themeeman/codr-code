@@ -10,6 +10,7 @@ namespace Codr.Models {
         public string FirstName { get; set; }
         public string? LastName { get; set; }
         public Guid Session { get; set; }
+        public string? ProfilePicture { get; set; }
         public List<string> Posts { get; private set; } = new List<string>();
         [JsonProperty]
         public IReadOnlyCollection<string> Friends {
