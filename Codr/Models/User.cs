@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 
 namespace Codr.Models {
     public class User : IEquatable<User> {
@@ -16,6 +18,12 @@ namespace Codr.Models {
         public IReadOnlyCollection<string> Friends {
             get => friends;
             private set => friends.UnionWith(value);
+        }
+        public string FullName {
+            get {
+                static string ToTitle(string s) => Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s);
+                return $"{ToTitle(FirstName)} {ToTitle(LastName ?? "")}";
+            }
         }
 
         private readonly HashSet<string> friends = new HashSet<string>();

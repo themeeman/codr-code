@@ -9,7 +9,7 @@ namespace Codr.Controllers {
             get {
                 using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
                 if (Request.Cookies.TryGetValue("Session", out string id)) {
-                    Thread.Sleep(1000); // what 
+                    Thread.Sleep(500); // what 
                     return session.GetUserBySessionId(id);
                 }
                 return null;
@@ -30,7 +30,8 @@ namespace Codr.Controllers {
                 if (u.Friends.Count != 0 && page > maxPage)
                     page = maxPage;
 
-                return View(new { Page = page, User = u });
+                ViewData["Page"] = page;
+                return View(u);
             }
             Response.Cookies.Delete("Session");
             return Redirect("/");
