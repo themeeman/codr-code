@@ -2,5 +2,6 @@
 
 @model User
 <div class="user-entry">
-
+    <img src="@(Model.ProfilePicture ?? "/default-profile.png")" class="profile-picture" />
+    <a href="/App/Profile?id=@Model.Id"><span style="font-size: large">@Model.FullName</span></a>
 </div>

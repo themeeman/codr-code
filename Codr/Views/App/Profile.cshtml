@@ -1,0 +1,26 @@
+﻿@using Codr.Models;
+@using Codr.Data;
+
+@model User
+@{
+    ViewData["Title"] = "Profile";
+    using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+    var LoggedIn = session.GetUser((string)ViewData["LoggedIn"]);
+
+}
+
+<div class="content">
+    @if (Model is { } u) {
+        <div id="profile-sidebar">
+            <h1>@u.FullName</h1>
+        </div>
+        <div id="profile-posts">
+            <p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p>
+        </div>
+    } else {
+        <p>User Not Found</p>
+    }
+</div>
+
+
+

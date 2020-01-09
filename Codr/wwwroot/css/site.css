@@ -94,13 +94,33 @@
     background-color: #333;
 }
 
-#profile-picture {
+.profile-picture {
     height: 100px;
     width: 100px;
-
 }
 
-#user-entry {
+.user-entry {
     height: 100px;
+    width: 80vw;
+    position: page;
+    display: inline-block;
+}
 
+#profile-sidebar {
+    position: absolute;
+    width: 20vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: red;
+}
+
+#profile-posts {
+    width: 80vw;
+    height: 100vh;
+    background-color: blue;
+    top: 0;
+    left: 20vw;
+    position: absolute;
+    overflow-y: scroll;
 }

@@ -36,5 +36,15 @@ namespace Codr.Controllers {
             Response.Cookies.Delete("Session");
             return Redirect("/");
         }
+
+        public IActionResult Profile(string id) {
+            if (ThisUser is { } u) {
+                using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+                var user = session.GetUser(id);
+                return View(user);
+            }
+            Response.Cookies.Delete("Session");
+            return Redirect("/");
+        }
     }
 }
