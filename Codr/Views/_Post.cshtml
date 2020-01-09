@@ -27,7 +27,7 @@
                     }
                 break;
             case Link link:
-                <a class="content" href=@link.Url.ToString()>@(link.Content ?? link.Url.ToString())</a>
+                <a class="content" href=@link.Url.ToString()>@(link.Content ?? link.Url.ToString())</a> 
                 break;
             case Code code:
                 <pre><code class=@(code.Language?.ToString().ToLower() ?? "plaintext")>@code.Content</code></pre>

@@ -39,6 +39,9 @@ namespace Codr.Controllers {
 
         public IActionResult Profile(string id) {
             if (ThisUser is { } u) {
+                if (string.IsNullOrEmpty(id)) {
+                    return View(u);
+                }
                 using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
                 var user = session.GetUser(id);
                 return View(user);

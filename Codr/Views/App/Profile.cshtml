@@ -1,4 +1,5 @@
 ﻿@using Codr.Models;
+@using Codr.Models.Posts;
 @using Codr.Data;
 
 @model User
@@ -13,14 +14,17 @@
     @if (Model is { } u) {
         <div id="profile-sidebar">
             <h1>@u.FullName</h1>
+
         </div>
         <div id="profile-posts">
-            <p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p><p>a</p>
+            @foreach (var postId in u.Posts) {
+                var post = session.Session.Load<Post?>(postId);
+                if (post is { } p) {
+                    await Html.RenderPartialAsync("~/Views/_Post.cshtml", p);
+                }
+            }
         </div>
     } else {
         <p>User Not Found</p>
     }
 </div>
-
-
-
