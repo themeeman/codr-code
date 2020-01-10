@@ -13,7 +13,7 @@
                 <img class="post-image" src="@image.Url.ToString()" />
                 break;
             case Text text:
-
+                <p>
                 @foreach (var textComponent in text.Components)
                 {
                     <span class="content @( string.Format("{0}{1}{2}{3}{4}{5}",
@@ -25,6 +25,7 @@
                         textComponent.Style.HasStyle(Spoiler) ? " spoiler" : ""
                         ) )">@textComponent.Content</span>
                     }
+                </p>
                 break;
             case Link link:
                 <a class="content" href=@link.Url.ToString()>@(link.Content ?? link.Url.ToString())</a> 
@@ -34,4 +35,5 @@
                 break;
         }
     }
+    <p class="content">Posted on @(Model.Created.ToString())</p>
 </div>

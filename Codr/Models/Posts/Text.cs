@@ -5,8 +5,8 @@ using System.Linq;
 namespace Codr.Models.Posts {
     public class Text : IPostComponent, IEquatable<Text> {
         public Text() { }
-        public Text(List<TextComponent> components) {
-            Components = components;
+        public Text(IEnumerable<TextComponent> components) {
+            Components = new List<TextComponent>(components);
         }
 
         public List<TextComponent> Components { get; private set; } = new List<TextComponent>();

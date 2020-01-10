@@ -19,6 +19,7 @@ namespace Codr.Models {
             get => friends;
             private set => friends.UnionWith(value);
         }
+        [JsonIgnore]
         public string FullName {
             get {
                 static string ToTitle(string s) => Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s);

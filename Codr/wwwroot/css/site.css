@@ -21,8 +21,8 @@
 .inline-code {
     display: block;
     font-family: monospace;
-    /*white-space: pre;*/
-    /*margin: 1em 0;*/
+    white-space: pre;
+    margin: 1em 0;
 }
 
 .spoiler {
@@ -30,9 +30,14 @@
 }
 
 .post {
-    width: 50vw;
+    padding: 0;
+    margin: 0;
+    width: 75vw;
     height: auto;
     word-wrap: normal;
+    border: solid;
+    border-color: gray;
+    border-width: 3px;
 } 
 
 .post-image {
@@ -112,13 +117,11 @@
     height: 100vh;
     top: 0;
     left: 0;
-    background-color: red;
 }
 
 #profile-posts {
     width: 80vw;
     height: 100vh;
-    background-color: blue;
     top: 0;
     left: 20vw;
     position: absolute;

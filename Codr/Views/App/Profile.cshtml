@@ -17,10 +17,16 @@
 
         </div>
         <div id="profile-posts">
+            <h1>Recent Posts</h1>
             @foreach (var postId in u.Posts) {
                 var post = session.Session.Load<Post?>(postId);
                 if (post is { } p) {
                     await Html.RenderPartialAsync("~/Views/_Post.cshtml", p);
+                    <form method="post">
+                        <label for="comment" class="content">Write a comment...</label>
+                        <textarea name="comment"></textarea>
+                        <input type="submit" />
+                    </form>
                 }
             }
         </div>
