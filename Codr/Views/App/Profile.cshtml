@@ -1,7 +1,7 @@
 ﻿@using Codr.Models;
 @using Codr.Models.Posts;
 @using Codr.Data;
-
+@using System.Linq;
 @model User
 @{
     ViewData["Title"] = "Profile";
@@ -9,7 +9,7 @@
     var LoggedIn = session.GetUser((string)ViewData["LoggedIn"]);
 
 }
-
+<script src="~/js/profile.js"></script>
 <div class="content">
     @if (Model is { } u) {
         <div id="profile-sidebar">
@@ -18,15 +18,13 @@
         </div>
         <div id="profile-posts">
             <h1>Recent Posts</h1>
-            @foreach (var postId in u.Posts) {
+            @foreach (var postId in Enumerable.Reverse(u.Posts)) {
                 var post = session.Session.Load<Post?>(postId);
                 if (post is { } p) {
                     await Html.RenderPartialAsync("~/Views/_Post.cshtml", p);
-                    <form method="post">
-                        <label for="comment" class="content">Write a comment...</label>
-                        <textarea name="comment"></textarea>
-                        <input type="submit" />
-                    </form>
+                    <label class="content">Write a comment...</label>
+                    <textarea name="comment" id="comment-box-@postId" draggable="false"></textarea>
+                    <button type="submit" onclick="postComment('@postId')">Submit</button>
                 }
             }
         </div>

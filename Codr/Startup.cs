@@ -10,7 +10,7 @@ namespace Codr {
     public class Startup {
         public Startup(IConfiguration configuration) {
 //            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-//            var user = session.GetUserByEmail("judetyrrell@outlook.com")!;
+//            var user = session.GetUserByEmail("tom@vanhowe.com")!;
 //            var post = new Post(user.Id);
 //            post.Components.AddRange(new IPostComponent[] {
 //                new Heading("Hello World!"),
@@ -23,7 +23,6 @@ namespace Codr {
 //}", Models.Language.CPP)
 //            });
 //            session.Session.Store(post);
-//            session.GetUserByEmail("judetyrrell@outlook.com")!.Posts.Add("22db611d-34b2-4037-b853-46872d648899");
 //            session.Session.SaveChanges();
             Configuration = configuration;
         }

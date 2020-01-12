@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Codr.Models.Posts {
     public class Comment : IEquatable<Comment> {
-        public Comment(string author) {
+        public Comment(string author, string content) {
             Author = author;
+            Content = content;
         }
 
         public string Author { get; private set; }
+        public string Content { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public HashSet<string> LikedBy { get; private set; } = new HashSet<string>();
         public HashSet<Comment> Replies { get; private set; } = new HashSet<Comment>();

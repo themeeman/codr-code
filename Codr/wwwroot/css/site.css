@@ -127,3 +127,7 @@
     position: absolute;
     overflow-y: scroll;
 }
+
+textarea {
+    resize: horizontal;
+}
