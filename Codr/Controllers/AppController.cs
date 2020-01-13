@@ -73,23 +73,5 @@ namespace Codr.Controllers {
             }
             return BadRequest();
         }
-
-        [HttpGet]
-        public IActionResult GetComments(string id) {
-            var post = session.Session.Load<Post?>(id);
-            if (post is { } p) {
-                return Json(p.Comments.Select(s => session.Session.Load<Comment?>(s)).OrderBy(c => c?.Likes ?? 0));
-            }
-            var comment = session.Session.Load<Comment?>(id);
-            if (comment is { } c) {
-                return Json(c.Replies.Select(s => session.Session.Load<Comment?>(s)).OrderBy(c => c?.Likes ?? 0));
-            }
-            return Json(null);
-        }
-
-        [HttpGet]
-        public IActionResult GetName(string id) {
-            return Json(session.GetUser(id)?.FullName);
-        }
     }
 }

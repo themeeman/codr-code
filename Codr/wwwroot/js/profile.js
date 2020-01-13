@@ -1,6 +1,20 @@
 ﻿'use strict';
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function postComment(postId) {
     const content = document.getElementById(`comment-box-${postId}`).value;
+    if (!content) {
+        alert("Comment must not be empty");
+        return;
+    }
+    document.getElementById(`comment-box-${postId}`).value = "";
     let formData = new FormData();
     formData.append("postId", postId);
     formData.append("content", content);
@@ -16,28 +30,38 @@ async function loadComments(postId) {
     var post = document.getElementById(`post-${postId}`);
 
     if (post) {
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append("id", postId);
         console.log(postId);
-        fetch(`/App/GetComments?id=${postId}`)
+        fetch(`/Api/GetReplies?id=${postId}`)
             .then(response => response.json())
             .then(comments => {
+                comments.forEach(c => c.Content = escapeHtml(c.Content)); return comments;
+            })
+            .then(comments => {
+                const container = document.getElementById(`comment-container-${postId}`);
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
                 comments.forEach(value => {
-                    let node = document.createElement("div");
+                    console.log(value);
+                    const node = document.createElement("div");
+                    node.classList.add("comment");
+                    console.log(value.Created);
                     const setHtml = (content, name) =>
-                        node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.author}">${name}</a></p>`;
+                        node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a> at ${value.Created}</p>`;
 
-                    if (names_cache[value.author])
-                        setHtml(value.content, names_cache[value.author]);
+                    if (names_cache[value.Author])
+                        setHtml(value.Content, names_cache[value.Author]);
                     else
-                        fetch(`/App/GetName?id=${value.author}`)
+                        fetch(`/Api/GetName?id=${value.Author}`)
                             .then(j => j.json())
                             .then(name => {
-                                names_cache[value.author] = name;
-                                setHtml(value.content, name);
+                                names_cache[value.Author] = name;
+                                setHtml(value.Content, name);
                             });
                     
-                    document.getElementById(`comment-container-${postId}`).appendChild(node);
+                    container.appendChild(node);
                 });
             })
             .catch(err => console.log(err));

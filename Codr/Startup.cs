@@ -1,29 +1,26 @@
-using Codr.Data;
-using Codr.Models.Posts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 namespace Codr {
     public class Startup {
         public Startup(IConfiguration configuration) {
-            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-            var user = session.GetUserByEmail("tom@vanhowe.com")!;
-            var post = new Post(user.Id);
-            post.Components.AddRange(new IPostComponent[] {
-                new Heading("Hello World!"),
-                new Text(new[] {
-                    new TextComponent("This is a post about C++ code", TextStyle.Bold)
-                }),
-                new Code(@"#include <iostream>
-auto main() -> int {
-    std::cout << ""Hello World!\n""
-}", Models.Language.CPP)
-            });
-            session.Session.Store(post);
-            session.Session.SaveChanges();
+//            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+//            var user = session.GetUserByEmail("tom@vanhowe.com")!;
+//            var post = new Post(user.Id);
+//            post.Components.AddRange(new IPostComponent[] {
+//                new Heading("Hello World!"),
+//                new Text(new[] {
+//                    new TextComponent("This is a post about C++ code", TextStyle.Bold)
+//                }),
+//                new Code(@"#include <iostream>
+//auto main() -> int {
+//    std::cout << ""Hello World!\n""
+//}", Models.Language.CPP)
+//            });
+//            session.Session.Store(post);
+//            session.Session.SaveChanges();
             Configuration = configuration;
         }
 
@@ -31,7 +28,7 @@ auto main() -> int {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
