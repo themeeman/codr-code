@@ -9,21 +9,21 @@ using Microsoft.Extensions.Hosting;
 namespace Codr {
     public class Startup {
         public Startup(IConfiguration configuration) {
-//            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-//            var user = session.GetUserByEmail("tom@vanhowe.com")!;
-//            var post = new Post(user.Id);
-//            post.Components.AddRange(new IPostComponent[] {
-//                new Heading("Hello World!"),
-//                new Text(new[] {
-//                    new TextComponent("This is a post about C++ code", TextStyle.Bold)
-//                }),
-//                new Code(@"#include <iostream>
-//auto main() -> int {
-//    std::cout << ""Hello World!\n""
-//}", Models.Language.CPP)
-//            });
-//            session.Session.Store(post);
-//            session.Session.SaveChanges();
+            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+            var user = session.GetUserByEmail("tom@vanhowe.com")!;
+            var post = new Post(user.Id);
+            post.Components.AddRange(new IPostComponent[] {
+                new Heading("Hello World!"),
+                new Text(new[] {
+                    new TextComponent("This is a post about C++ code", TextStyle.Bold)
+                }),
+                new Code(@"#include <iostream>
+auto main() -> int {
+    std::cout << ""Hello World!\n""
+}", Models.Language.CPP)
+            });
+            session.Session.Store(post);
+            session.Session.SaveChanges();
             Configuration = configuration;
         }
 

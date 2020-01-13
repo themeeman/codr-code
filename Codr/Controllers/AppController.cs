@@ -86,5 +86,10 @@ namespace Codr.Controllers {
             }
             return Json(null);
         }
+
+        [HttpGet]
+        public IActionResult GetName(string id) {
+            return Json(session.GetUser(id)?.FullName);
+        }
     }
 }

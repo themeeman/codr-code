@@ -131,3 +131,8 @@
 textarea {
     resize: horizontal;
 }
+
+.comment-container > div {
+    border-color: dimgrey;
+    border-width: 3px;
+}

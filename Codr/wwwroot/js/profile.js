@@ -10,6 +10,8 @@ function postComment(postId) {
     }).then(() => loadComments(postId));
 }
 
+const names_cache = {};
+
 async function loadComments(postId) {
     var post = document.getElementById(`post-${postId}`);
 
@@ -22,8 +24,20 @@ async function loadComments(postId) {
             .then(comments => {
                 comments.forEach(value => {
                     let node = document.createElement("div");
-                    node.innerText = value.content;
-                    document.getElementById(`post-${postId}`).appendChild(node);
+                    const setHtml = (content, name) =>
+                        node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.author}">${name}</a></p>`;
+
+                    if (names_cache[value.author])
+                        setHtml(value.content, names_cache[value.author]);
+                    else
+                        fetch(`/App/GetName?id=${value.author}`)
+                            .then(j => j.json())
+                            .then(name => {
+                                names_cache[value.author] = name;
+                                setHtml(value.content, name);
+                            });
+                    
+                    document.getElementById(`comment-container-${postId}`).appendChild(node);
                 });
             })
             .catch(err => console.log(err));
