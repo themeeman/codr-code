@@ -11,11 +11,12 @@ namespace Codr.Models.Posts {
             Content = content;
         }
 
+        public string Id { get; private set; } = string.Empty;
         public string Author { get; private set; }
         public string Content { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public HashSet<string> LikedBy { get; private set; } = new HashSet<string>();
-        public HashSet<Comment> Replies { get; private set; } = new HashSet<Comment>();
+        public HashSet<string> Replies { get; private set; } = new HashSet<string>();
         public int Likes => LikedBy.Count;
 
         public override bool Equals(object? obj) {

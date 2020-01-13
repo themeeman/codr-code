@@ -1,7 +1,7 @@
 ﻿@using Codr.Models.Posts
 @using static Codr.Models.Posts.TextStyle
 @model Post
-<div class="post">
+<div class="post" id="post-@Model.Id">
     @foreach (var component in Model.Components)
     {
         @switch (component)

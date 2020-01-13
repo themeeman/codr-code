@@ -3,6 +3,7 @@ using Codr.Models;
 using Codr.Models.Posts;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
+using System.Linq;
 
 namespace Codr.Controllers {
     public class AppController : Controller {
@@ -62,13 +63,28 @@ namespace Codr.Controllers {
             if (ThisUser is { } u) {
                 var post = session.Session.Load<Post?>(postId);
                 if (post is { } p) {
-                    p.Comments.Add(new Comment(u.Id, content));
+                    var comment = new Comment(u.Id, content);
+                    session.Session.Store(comment);
+                    session.Session.SaveChanges();
+                    p.Comments.Add(session.Session.Advanced.GetDocumentId(comment));
                     session.Session.SaveChanges();
                     return Ok();
                 }
-                return BadRequest();
             }
             return BadRequest();
+        }
+
+        [HttpGet]
+        public IActionResult GetComments(string id) {
+            var post = session.Session.Load<Post?>(id);
+            if (post is { } p) {
+                return Json(p.Comments.Select(s => session.Session.Load<Comment?>(s)).OrderBy(c => c?.Likes ?? 0));
+            }
+            var comment = session.Session.Load<Comment?>(id);
+            if (comment is { } c) {
+                return Json(c.Replies.Select(s => session.Session.Load<Comment?>(s)).OrderBy(c => c?.Likes ?? 0));
+            }
+            return Json(null);
         }
     }
 }
