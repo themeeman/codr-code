@@ -91,6 +91,20 @@
     color: white;
 }
 
+#new-post-box {
+    height: 7.5vh;
+    width: 10vw;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 65vw;
+    position: absolute;
+    color: white;
+}
+#new-post-box:hover {
+    background-color: #333;
+}
+
 #login-box:hover {
     background-color: #333;
 }
@@ -128,10 +142,6 @@
     overflow-y: scroll;
 }
 
-textarea {
-    resize: horizontal;
-}
-
 .comment-container {
     padding: 10px;
     padding-left: 0;
@@ -144,4 +154,9 @@ textarea {
     border-color: dimgray;
     border-width: 3px;
     line-height: 2px;
+    position: relative;
+    width: inherit;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }

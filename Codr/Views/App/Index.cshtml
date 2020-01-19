@@ -4,6 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
+<div id="topbar" class="content">
+    <a href="/App/Profile">
+        <div id="login-box">Profile</div>
+    </a>
+    <a href="/App/Friends">
+        <div id="register-box">Friends</div>
+    </a>
+    <a href="/App/Profile/NewPost">
+        <div id="new-post-box">New Post</div>
+    </a>
+</div>
 <img src="@(Model.ProfilePicture ?? "/default-profile.png")" class="profile-picture"/>
 
 <p class="content">Hello @Model.FullName</p>

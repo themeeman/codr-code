@@ -8,20 +8,22 @@ using System.Linq;
 
 namespace Codr.Controllers {
     public class ApiController : Controller {
+        private readonly JsonSerializerSettings options = new JsonSerializerSettings {
+            Converters = new List<JsonConverter> { new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" } }
+        };
+
+        public struct Result {
+            public HashSet<string> Comments { get; set; }
+        }
 
         [HttpGet]
         public IActionResult GetReplies(string id) {
             using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-            var post = session.Session.Load<Post?>(id);
-            var options = new JsonSerializerSettings {
-                Converters = new List<JsonConverter> { new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" } }
-            };
+
+            var post = session.Session.Load<Result?>(id);
+
             if (post is { } p) {
                 return Json(p.Comments.Select(s => session.Session.Load<Comment?>(s)).OrderBy(c => c?.Likes ?? 0), options);
-            }
-            var comment = session.Session.Load<Comment?>(id);
-            if (comment is { } c) {
-                return Json(c.Replies.Select(s => session.Session.Load<Comment?>(s)).OrderBy(c => c?.Likes ?? 0), options);
             }
             return Json(null);
         }
@@ -29,9 +31,6 @@ namespace Codr.Controllers {
         [HttpGet]
         public IActionResult GetName(string id) {
             using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-            var options = new JsonSerializerSettings {
-                Converters = new List<JsonConverter> { new IsoDateTimeConverter() { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" } }
-            };
             return Json(session.GetUser(id)?.FullName, options);
         }
     }

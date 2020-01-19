@@ -4,9 +4,8 @@
 
 @{
     ViewData["Title"] = "Friends";
-    var page = (int)ViewData["Page"];
     using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-    var friends = session.GetUsers(Model.Friends.Skip(10 * page).Take(10));
+    var friends = session.GetUsers(Model.Friends);
 }
 
 <h1 class="content">Friends</h1>

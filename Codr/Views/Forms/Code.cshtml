@@ -1,0 +1,13 @@
+﻿<h4>Code</h4>
+<form class="post-component-form" name="code">
+    <label for="Code" >Code</label>
+    <textarea name="Code"></textarea>
+    <br />
+    <select name="Language" >
+        @foreach (string lang in Enum.GetNames(typeof(Codr.Models.Language))) {
+            <option value="@lang">@lang</option>
+        }
+    </select>
+    <br />
+    <input type="submit" value="Submit" />
+</form>

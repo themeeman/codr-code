@@ -16,7 +16,7 @@ namespace Codr.Models.Posts {
         public string Content { get; private set; }
         public DateTime Created { get; private set; } = DateTime.Now;
         public HashSet<string> LikedBy { get; private set; } = new HashSet<string>();
-        public HashSet<string> Replies { get; private set; } = new HashSet<string>();
+        public HashSet<string> Comments { get; private set; } = new HashSet<string>();
         public int Likes => LikedBy.Count;
 
         public override bool Equals(object? obj) {

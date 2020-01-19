@@ -1,4 +1,8 @@
 ﻿'use strict';
+
+const names_cache = {};
+const responding_to = {};
+
 function escapeHtml(unsafe) {
     return unsafe
         .replace(/&/g, "&amp;")
@@ -8,7 +12,7 @@ function escapeHtml(unsafe) {
         .replace(/'/g, "&#039;");
 }
 
-function postComment(postId) {
+async function postComment(postId) {
     const content = document.getElementById(`comment-box-${postId}`).value;
     if (!content) {
         alert("Comment must not be empty");
@@ -16,54 +20,72 @@ function postComment(postId) {
     }
     document.getElementById(`comment-box-${postId}`).value = "";
     let formData = new FormData();
-    formData.append("postId", postId);
+    formData.append("postId", responding_to[postId] ? responding_to[postId] : postId);
+    responding_to[postId] = undefined;
     formData.append("content", content);
     fetch("/App/Profile/AddComment", {
         method: "POST",
         body: formData
-    }).then(() => loadComments(postId));
+    }).then(() => displayComments(postId));
 }
 
-const names_cache = {};
 
-async function loadComments(postId) {
-    var post = document.getElementById(`post-${postId}`);
+async function getName(userId) {
+    if (names_cache[userId])
+        return new Promise(resolve => resolve(names_cache[userId]));
+    else
+        return fetch(`/Api/GetName?id=${userId}`)
+            .then(j => j.json())
+            .then(name => {
+                names_cache[userId] = name;
+                return name;
+            })
+            .catch(err => console.log(err));
+}
 
-    if (post) {
+async function loadComments(postId, depth = 0) {
+    const result = [];
+    const add_depth = comment => { return { depth: depth, ...comment }; };
+    return fetch(`/Api/GetReplies?id=${postId}`)
+        .then(r => r.json())
+        .then(async (replies) => {
+            for (const comment of replies) {
+                comment.Content = escapeHtml(comment.Content);
+                result.push(add_depth(comment));
+                result.push(
+                    ...await loadComments(comment.Id, depth + 1)
+                );
+            }
+            return result;
+        })
+        .catch(err => console.log(err));
+}
+
+async function displayComments(postId) {
+    if (document.getElementById(`post-${postId}`)) {
         const formData = new FormData();
         formData.append("id", postId);
         console.log(postId);
-        fetch(`/Api/GetReplies?id=${postId}`)
-            .then(response => response.json())
-            .then(comments => {
-                comments.forEach(c => c.Content = escapeHtml(c.Content)); return comments;
-            })
-            .then(comments => {
-                const container = document.getElementById(`comment-container-${postId}`);
-                while (container.firstChild) {
-                    container.removeChild(container.firstChild);
-                }
-                comments.forEach(value => {
-                    console.log(value);
-                    const node = document.createElement("div");
-                    node.classList.add("comment");
-                    console.log(value.Created);
-                    const setHtml = (content, name) =>
-                        node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a> at ${value.Created}</p>`;
+        const comments = await loadComments(postId);
+        console.log(comments);
+        const container = document.getElementById(`comment-container-${postId}`);
+        while (container.firstChild)
+            container.firstChild.remove();
 
-                    if (names_cache[value.Author])
-                        setHtml(value.Content, names_cache[value.Author]);
-                    else
-                        fetch(`/Api/GetName?id=${value.Author}`)
-                            .then(j => j.json())
-                            .then(name => {
-                                names_cache[value.Author] = name;
-                                setHtml(value.Content, name);
-                            });
-                    
-                    container.appendChild(node);
-                });
-            })
-            .catch(err => console.log(err));
+        for (const value of comments) {
+            console.log(value.depth);
+            const node = document.createElement("div");
+            node.classList.add("comment");
+            const setHtml = (content, name) =>
+                node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a>at ${value.Created}</p>
+<a onclick=''></a>`;
+
+            const name = await getName(value.Author);
+            const left = value.depth * 50;
+            node.style.left = `${left}px`;
+            node.style.width = `calc(100% - ${left}px)`;
+            setHtml(value.Content, name);
+            container.appendChild(node);
+        }
     }
 }

@@ -2,8 +2,8 @@
 using Codr.Models;
 using Codr.Models.Posts;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading;
-using System.Linq;
 
 namespace Codr.Controllers {
     public class AppController : Controller {
@@ -26,13 +26,8 @@ namespace Codr.Controllers {
             return Redirect("/");
         }
 
-        public IActionResult Friends(int page = 0) {
-            if (ThisUser is { } u) {
-                int maxPage = ((u.Friends.Count - 1) / 10) + 1;
-                if (u.Friends.Count != 0 && page > maxPage)
-                    page = maxPage;
-
-                ViewData["Page"] = page;
+        public IActionResult Friends() {
+            if (ThisUser is { } u) { 
                 return View(u);
             }
             Response.Cookies.Delete("Session");
@@ -57,11 +52,15 @@ namespace Codr.Controllers {
             return Redirect("/App");
         }
 
+        private struct Result {
+            public HashSet<string> Comments { get; private set; }
+        }
+
         [Route("App/Profile/AddComment")]
         [HttpPost]
         public IActionResult AddComment(string postId, string content) {
             if (ThisUser is { } u) {
-                var post = session.Session.Load<Post?>(postId);
+                var post = session.Session.Load<Result?>(postId);
                 if (post is { } p) {
                     var comment = new Comment(u.Id, content);
                     session.Session.Store(comment);
@@ -72,6 +71,32 @@ namespace Codr.Controllers {
                 }
             }
             return BadRequest();
+        }
+
+        [Route("App/Profile/NewPost")]
+        [HttpGet]
+        public IActionResult NewPost() {
+            if (ThisUser is { } u) {
+                return View(u);
+            }
+            Response.Cookies.Delete("Session");
+            return Redirect("/");
+        }
+
+        [Route("App/Profile/NewPost")]
+        [HttpPost]
+        public IActionResult NewPost(string components) {
+            if (ThisUser is { } u) {
+                var post = new Post(u.Id);
+                var _components = Newtonsoft.Json.JsonConvert.DeserializeObject<List<IPostComponent>>(components, new ComponentSerializer());
+                post.Components.AddRange(_components);
+                session.Session.Store(post);
+                session.Session.SaveChanges();
+                ThisUser.Posts.Add(session.Session.Advanced.GetDocumentId(post));
+                session.Session.SaveChanges();
+            }
+            
+            return Redirect("/App");
         }
     }
 }

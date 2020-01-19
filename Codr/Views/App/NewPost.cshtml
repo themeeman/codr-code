@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "NewPost";
+}
+
+<script async src="~/js/newpost.js"></script>
+<div id="profile-sidebar" class="content">
+    <h1>New Post</h1>
+    @{
+        await Html.RenderPartialAsync("~/Views/Forms/Code.cshtml");
+        await Html.RenderPartialAsync("~/Views/Forms/Heading.cshtml");
+        await Html.RenderPartialAsync("~/Views/Forms/Image.cshtml");
+        await Html.RenderPartialAsync("~/Views/Forms/Link.cshtml");
+        await Html.RenderPartialAsync("~/Views/Forms/Text.cshtml");
+    }
+    <button onclick="submitPost()">Finish</button>
+</div>
+
+<div id="profile-posts"></div>
