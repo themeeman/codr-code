@@ -1,8 +1,24 @@
-﻿
+﻿@using Codr.Models;
+@using Codr.Data;
+@model User
+
 @{
     ViewData["Title"] = "Search";
-    var query = ViewData["Query"];
+    var query = (string)ViewData["Query"];
 }
 
-<input type="search" />
+@{ await Html.RenderPartialAsync("~/Views/App/_TopBar.cshtml"); }
 
+<form method="get">
+    <input type="search" id="search-bar" value="@query" name="query" />
+    <br />
+    <input type="submit" value="Search" />
+    @if (!string.IsNullOrEmpty(query)) {
+        using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+        var results = session.Search(query).OrderByDescending(u => session.FriendQuotient(Model, u));
+        @foreach (var u in results) {
+            <br />
+            await Html.RenderPartialAsync("~/Views/_UserEntry.cshtml", u);
+        }
+    }
+</form>

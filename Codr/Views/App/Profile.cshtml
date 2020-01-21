@@ -9,6 +9,9 @@
     var LoggedIn = session.GetUser((string)ViewData["LoggedIn"]);
 
 }
+
+@{ await Html.RenderPartialAsync("~/Views/App/_TopBar.cshtml"); }
+
 <script src="~/js/profile.js"></script>
 <div class="content">
     @if (Model is { } u) {

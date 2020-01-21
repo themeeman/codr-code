@@ -1,22 +1,22 @@
 ﻿@using Codr.Models.Posts
 @using static Codr.Models.Posts.TextStyle
 @model Post
-<div class="post" id="post-@Model.Id">
-    @foreach (var component in Model.Components)
-    {
-        @switch (component)
-        {
+    <div class="post" id="post-@Model.Id">
+        @foreach (var component in Model.Components) {
+            @switch (component) {
             case Heading h:
                 <h1 class="content">@h.Content</h1>
                 break;
             case Image image:
-                <img class="post-image" src="@image.Url.ToString()" />
+                string s = image.Url;
+                @if (!Uri.IsWellFormedUriString(s, UriKind.Absolute))
+                    s = "https://" + s;
+                <img class="post-image" src="@s" />
                 break;
             case Text text:
                 <p>
-                @foreach (var textComponent in text.Components)
-                {
-                    <span class="content @( string.Format("{0}{1}{2}{3}{4}{5}",
+                    @foreach (var textComponent in text.Components) {
+                        <span class="content @( string.Format("{0}{1}{2}{3}{4}{5}",
                         textComponent.Style.HasStyle(Bold) ? "bold" : "",
                         textComponent.Style.HasStyle(Underlined) ? " underlined" : "",
                         textComponent.Style.HasStyle(Italics) ? " italics" : "",
@@ -28,12 +28,15 @@
                 </p>
                 break;
             case Link link:
-                <a class="content" href=@link.Url.ToString()>@(link.Content ?? link.Url.ToString())</a> 
+                string s2 = link.Url;
+                @if (!Uri.IsWellFormedUriString(s2, UriKind.Absolute))
+                    s = "https://" + s2;
+                <a class="content" href="@s2">@(string.IsNullOrEmpty(link.Content) ? link.Content : s2)</a>
                 break;
             case Code code:
                 <pre><code class=@(code.Language?.ToString().ToLower() ?? "plaintext")>@code.Content</code></pre>
                 break;
+            }
         }
-    }
-    <p class="content">Posted on @(Model.Created.ToString())</p>
-</div>
+        <p class="content">Posted on @Model.Created.ToString()</p>
+    </div>

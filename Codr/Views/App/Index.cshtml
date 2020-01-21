@@ -1,20 +1,33 @@
 ﻿@using Codr.Models
+@using Codr.Data;
 @model User
 @{
     ViewData["Title"] = "Index";
 }
 
-<div id="topbar" class="content">
-    <a href="/App/Profile">
-        <div id="login-box">Profile</div>
-    </a>
-    <a href="/App/Friends">
-        <div id="register-box">Friends</div>
-    </a>
-    <a href="/App/Profile/NewPost">
-        <div id="new-post-box">New Post</div>
-    </a>
-</div>
-<img src="@(Model.ProfilePicture ?? "/default-profile.png")" class="profile-picture"/>
+@{ await Html.RenderPartialAsync("~/Views/App/_TopBar.cshtml"); }
+
+<img src="@(Model.ProfilePicture ?? "/default-profile.png")" class="profile-picture" />
 
 <p class="content">Hello @Model.FullName</p>
+
+@{
+    using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+    var posts = session.RecentPosts(Model.Friends, 10);
+}
+
+<div id="profile-posts">
+    <h2 class="content">Recent Posts</h2>
+    @if (posts.Count == 0) {
+        <h4 class="content">No recent posts available! Go make some friends.</h4>
+    }
+    @foreach (var post in posts) {
+        var author = session.GetUser(post.Author);
+        if (author is { } u) {
+            <br />
+            <a href="/App/Profile?id=@u.Id" class="content">@u.FullName</a>
+            <br />
+            await Html.RenderPartialAsync("~/Views/Post/Render.cshtml", post);
+        }
+    }
+</div>

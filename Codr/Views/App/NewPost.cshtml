@@ -3,6 +3,8 @@
     ViewData["Title"] = "NewPost";
 }
 
+@{ await Html.RenderPartialAsync("~/Views/App/_TopBar.cshtml"); }
+
 <script async src="~/js/newpost.js"></script>
 <div id="profile-sidebar" class="content">
     <h1>New Post</h1>
@@ -13,7 +15,7 @@
         await Html.RenderPartialAsync("~/Views/Forms/Link.cshtml");
         await Html.RenderPartialAsync("~/Views/Forms/Text.cshtml");
     }
-    <button onclick="submitPost()">Finish</button>
+    <button id="submit-post-button" onclick="submitPost()">Finish</button>
 </div>
 
 <div id="profile-posts"></div>

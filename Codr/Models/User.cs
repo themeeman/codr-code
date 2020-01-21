@@ -11,7 +11,7 @@ namespace Codr.Models {
         public HashedPassword Password { get; set; }
         public string FirstName { get; set; }
         public string? LastName { get; set; }
-        public Guid Session { get; set; }
+        public Guid? Session { get; set; }
         public string? ProfilePicture { get; set; }
         public List<string> Posts { get; private set; } = new List<string>();
         [JsonProperty]
@@ -19,7 +19,6 @@ namespace Codr.Models {
             get => friends;
             private set => friends.UnionWith(value);
         }
-        [JsonIgnore]
         public string FullName {
             get {
                 static string ToTitle(string s) => Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s);
@@ -34,7 +33,7 @@ namespace Codr.Models {
             Password = password;
             FirstName = firstName;
             LastName = lastName;
-            Session = Guid.NewGuid();
+            Session = null;
         }
 
         public void AddFriend(User other) {

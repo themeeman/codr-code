@@ -3,10 +3,10 @@
 namespace Codr.Models.Posts {
     public class Image : IPostComponent, IEquatable<Image> {
         public Image(string url) {
-            Url = new Uri(url, UriKind.Absolute);
+            Url = url;
         }
 
-        public Uri Url { get; private set; }
+        public string Url { get; private set; }
 
         public override bool Equals(object? obj) {
             if (obj is null || !(obj is Image)) return false;

@@ -2,6 +2,8 @@
 @using Codr.Data;
 @model User
 
+@{ await Html.RenderPartialAsync("~/Views/App/_TopBar.cshtml"); }
+
 @{
     ViewData["Title"] = "Friends";
     using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());

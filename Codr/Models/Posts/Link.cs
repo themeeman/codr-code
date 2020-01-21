@@ -4,11 +4,11 @@ namespace Codr.Models.Posts {
     public class Link : IPostComponent, IEquatable<Link> {
         public Link(string url, string? content = null) {
             Content = content;
-            Url = new Uri(url, UriKind.Absolute);
+            Url = url;
         }
 
         public string? Content { get; private set; }
-        public Uri Url { get; private set; }
+        public string Url { get; private set; }
 
         public override bool Equals(object? obj) {
             if (obj is null || !(obj is Link)) return false;

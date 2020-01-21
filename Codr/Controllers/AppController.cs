@@ -2,6 +2,7 @@
 using Codr.Models;
 using Codr.Models.Posts;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -88,7 +89,7 @@ namespace Codr.Controllers {
         public IActionResult NewPost(string components) {
             if (ThisUser is { } u) {
                 var post = new Post(u.Id);
-                var _components = Newtonsoft.Json.JsonConvert.DeserializeObject<List<IPostComponent>>(components, new ComponentSerializer());
+                var _components = Newtonsoft.Json.JsonConvert.DeserializeObject<List<IPostComponent>>(Uri.UnescapeDataString(components), new ComponentSerializer());
                 post.Components.AddRange(_components);
                 session.Session.Store(post);
                 session.Session.SaveChanges();
@@ -96,8 +97,24 @@ namespace Codr.Controllers {
                 session.Session.SaveChanges();
             }
             
-            return Redirect("/App");
+            return Redirect("/");
         }
 
+        public IActionResult Search(string query = "") {
+            if (ThisUser is { } u) {
+                ViewData["Query"] = query;
+                return View(u);
+            }
+            return Redirect("/");
+        }
+
+        public IActionResult Logout() {
+            Response.Cookies.Delete("Session");
+            if (ThisUser is { } u) {
+                u.Session = new Guid();
+                session.Session.SaveChanges();
+            }
+            return Redirect("/");
+        }
     }
 }

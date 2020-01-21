@@ -45,10 +45,15 @@
     height: auto;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 #topbar {
     width: 100vw;
     height: 7.5vh;
-    position: fixed;
+    position: relative;
     padding: 0;
     margin: 0;
     background-color: dimgrey;
@@ -69,48 +74,42 @@
     text-align: center;
 }
 
-#login-box {
+#topbar div {
     height: 7.5vh;
     width: 10vw;
     padding: 0;
     margin: 0;
     top: 0;
+    position: absolute;
+    color: white;
+}
+
+#topbar div:hover {
+    background-color: #333;
+}
+
+#login-topbar-box {
     left: 90vw;
-    position: absolute;
-    color: white;
 }
 
-#register-box {
-    height: 7.5vh;
-    width: 10vw;
-    padding: 0;
-    margin: 0;
-    top: 0;
+#register-topbar-box {
     left: 80vw;
-    position: absolute;
-    color: white;
 }
 
-#new-post-box {
-    height: 7.5vh;
-    width: 10vw;
-    padding: 0;
-    margin: 0;
-    top: 0;
-    left: 65vw;
-    position: absolute;
-    color: white;
-}
-#new-post-box:hover {
-    background-color: #333;
+#new-post-topbar-box {
+    left: 70vw;
 }
 
-#login-box:hover {
-    background-color: #333;
+#search-topbar-box {
+    left: 60vw;
 }
 
-#register-box:hover {
-    background-color: #333;
+#logout-topbar-box {
+    left: 10vw;
+}
+
+#home-topbar-box {
+    left: 0;
 }
 
 .profile-picture {
@@ -128,15 +127,19 @@
 #profile-sidebar {
     position: absolute;
     width: 20vw;
-    height: 100vh;
-    top: 0;
+    height: 92.5vh;
+    top: 7.5vh;
     left: 0;
+    padding: 0;
+    margin: 0;
 }
 
 #profile-posts {
     width: 80vw;
-    height: 100vh;
-    top: 0;
+    height: 92.5vh;
+    padding: 0;
+    margin: 0;
+    top: 7.5vh;
     left: 20vw;
     position: absolute;
     overflow-y: scroll;
@@ -159,4 +162,11 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+}
+
+#search-bar {
+    margin-top: 1em;
+    margin-left: 5vw;
+    width: 90vw;
+    font-size: 5em;
 }

@@ -1,4 +1,17 @@
 ﻿const working_post = [];
+
+function escapeHtml(unsafe) {
+    for (const key of Object.keys(unsafe)) {
+        if (typeof unsafe[key] === "string")
+            unsafe[key] = unsafe[key]
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    }
+}
+
 window.onload = () => {
     const els = document.getElementsByClassName("post-component-form");
     console.log(els);
@@ -7,6 +20,7 @@ window.onload = () => {
             e.preventDefault();
             var o = {Type: e.target.name};
             new FormData(e.target).forEach((value, name) => o[name] = value);
+            //escapeHtml(o);
             console.log(o);
             working_post.push(o);
             fetch(`/Post/Render?components=${JSON.stringify(working_post)}`)
@@ -22,8 +36,14 @@ window.onload = () => {
 };
 
 function submitPost() {
+    if (!working_post.length) {
+        alert("Post cannot be empty");
+        return;
+    }
+    document.getElementById("submit-post-button").disabled = true;
     var data = new FormData();
-    data.append("components", JSON.stringify(working_post));
+    data.append("components", encodeURIComponent(JSON.stringify(working_post)));
+    console.log(data.get("components"));
     fetch(`/App/Profile/NewPost`, {
         method: "POST",
         body: data
