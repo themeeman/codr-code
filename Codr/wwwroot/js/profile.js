@@ -78,7 +78,7 @@ async function displayComments(postId) {
             node.classList.add("comment");
             const setHtml = (content, name) =>
                 node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a>at ${value.Created}</p>
-<a onclick=''></a>`;
+<button onclick='responding_to["${postId}"] = "${value.Id}"'>Reply</button>`;
 
             const name = await getName(value.Author);
             const left = value.depth * 50;

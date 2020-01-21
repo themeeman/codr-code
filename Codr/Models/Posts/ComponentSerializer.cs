@@ -6,8 +6,7 @@ namespace Codr.Models.Posts {
     public class ComponentSerializer : JsonConverter<IPostComponent> {
         public override IPostComponent ReadJson(JsonReader reader, Type objectType, IPostComponent existingValue, bool hasExistingValue, JsonSerializer serializer) {
             var o = JObject.Load(reader);
-            string s;
-            return (s = o["Type"].ToString()) switch {
+            return o["Type"].ToString() switch {
                 "code" => new Code(o["Code"].ToString(), o["Language"].ToString() == "Plaintext" ? (Language?)null : Enum.Parse<Language>(o["Language"].ToString())),
                 "heading" => new Heading(o["Content"].ToString()),
                 "image" => new Image(o["Url"].ToString()),

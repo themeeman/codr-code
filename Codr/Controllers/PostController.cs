@@ -1,6 +1,7 @@
 ﻿using Codr.Data;
 using Codr.Models.Posts;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Codr.Controllers {
@@ -18,7 +19,7 @@ namespace Codr.Controllers {
 
         public IActionResult Render(string components) {
             var post = new Post();
-            var _components = Newtonsoft.Json.JsonConvert.DeserializeObject<List<IPostComponent>>(components, new ComponentSerializer());
+            var _components = JsonConvert.DeserializeObject<List<IPostComponent>>(components, new ComponentSerializer());
             post.Components.AddRange(_components);
             return View(post);
         }
