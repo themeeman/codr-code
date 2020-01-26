@@ -41,6 +41,7 @@ namespace Codr.Controllers {
                     return View(u);
                 }
                 var user = session.GetUser(id);
+                ViewData["LoggedIn"] = u.Id;
                 return View(user);
             }
             Response.Cookies.Delete("Session");

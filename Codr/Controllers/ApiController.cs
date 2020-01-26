@@ -46,5 +46,24 @@ namespace Codr.Controllers {
             }
             return BadRequest();
         }
+
+        public IActionResult RemoveFriend(string lhs, string rhs) {
+            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+            var u1 = session.GetUser(lhs);
+            var u2 = session.GetUser(rhs);
+            if (u1 is { } && u2 is { }) {
+                u1.RemoveFriend(u2);
+                session.Session.SaveChanges();
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpGet]
+        public IActionResult IsFriend(string lhs, string rhs) {
+            using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
+            var u = session.GetUser(lhs);
+            return Json(u!.Friends.Contains(rhs));
+        }
     }
 }

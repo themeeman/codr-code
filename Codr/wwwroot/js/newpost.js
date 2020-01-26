@@ -20,7 +20,6 @@ window.onload = () => {
             e.preventDefault();
             var o = {Type: e.target.name};
             new FormData(e.target).forEach((value, name) => o[name] = value);
-            //escapeHtml(o);
             console.log(o);
             working_post.push(o);
             fetch(`/Post/Render?components=${JSON.stringify(working_post)}`)

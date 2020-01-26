@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Profile";
     using var session = new UserProvider(DocumentStoreHolder.Store.OpenSession());
-    var LoggedIn = session.GetUser((string)ViewData["LoggedIn"]);
+    var LoggedIn = session.GetUser((string)ViewData["LoggedIn"])!;
 
 }
 
@@ -17,8 +17,8 @@
     @if (Model is { } u) {
         <div id="profile-sidebar">
             <h1>@u.FullName</h1>
-
         </div>
+        <script>updateFriendButton('@LoggedIn.Id', '@Model.Id')</script>
         <div id="profile-posts">
             <h1>Recent Posts</h1>
             @foreach (var postId in Enumerable.Reverse(u.Posts)) {

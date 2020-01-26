@@ -2,6 +2,7 @@
 
 const names_cache = {};
 const responding_to = {};
+let _is_friend = undefined;
 
 function escapeHtml(unsafe) {
     return unsafe
@@ -10,6 +11,62 @@ function escapeHtml(unsafe) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+function isFriend(lhs, rhs) {
+    if (_is_friend !== undefined) {
+        return new Promise(resolve => resolve(_is_friend));
+    } else {
+        return fetch(`/Api/IsFriend?lhs=${lhs}&rhs=${rhs}`)
+            .then(r => r.json())
+            .then(i => {
+                _is_friend = i;
+                return i;
+            });
+    }
+}
+
+async function updateFriendButton(loggedIn, profile) {
+    const container = document.getElementById("profile-sidebar");
+    if (document.getElementById("friend-button")) {
+        document.getElementById("friend-button").remove();
+    }
+    if (loggedIn === profile) {
+        return;
+    }
+    const button = document.createElement("button");
+    button.id = "friend-button";
+    const f = await isFriend(loggedIn, profile);
+    if (f) {
+        button.innerText = "Remove Friend";
+        button.onclick = () => removeFriend(loggedIn, profile);
+    } else {
+        button.innerText = "Add Friend";
+        button.onclick = () => addFriend(loggedIn, profile);
+    }
+    container.appendChild(button);
+}
+
+async function addFriend(loggedIn, profile) {
+    _is_friend = true;
+    const data = new FormData();
+    data.append("lhs", loggedIn);
+    data.append("rhs", profile);
+    fetch("/Api/AddFriend", {
+        method: "POST",
+        body: data
+    }).then(() => updateFriendButton(loggedIn, profile));
+}
+
+async function removeFriend(loggedIn, profile) {
+    _is_friend = false;
+    const data = new FormData();
+    data.append("lhs", loggedIn);
+    data.append("rhs", profile);
+    fetch("/Api/RemoveFriend", {
+        method: "POST",
+        body: data
+    }).then(() => updateFriendButton(loggedIn, profile));
 }
 
 async function postComment(postId) {
@@ -77,11 +134,16 @@ async function displayComments(postId) {
             const node = document.createElement("div");
             node.classList.add("comment");
             const setHtml = (content, name) =>
-                node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a>at ${value.Created}</p>
-<button onclick='responding_to["${postId}"] = "${value.Id}"'>Reply</button>`;
+                node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a>at ${value.Created}</p>`;
 
             const name = await getName(value.Author);
             const left = value.depth * 50;
+
+            const button = document.createElement("button");
+            button.onclick = () => responding_to[postId] = value.Id;
+            button.innerText = "Reply";
+            node.appendChild(button);
+
             node.style.left = `${left}px`;
             node.style.width = `calc(100% - ${left}px)`;
             setHtml(value.Content, name);

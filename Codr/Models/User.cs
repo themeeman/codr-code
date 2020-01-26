@@ -41,6 +41,11 @@ namespace Codr.Models {
             other.friends.Add(Id);
         }
 
+        public void RemoveFriend(User other) {
+            friends.Remove(other.Id);
+            other.friends.Remove(Id);
+        }
+
         public void NewSession() {
             Session = Guid.NewGuid();
         }
