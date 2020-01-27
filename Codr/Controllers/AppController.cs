@@ -37,12 +37,8 @@ namespace Codr.Controllers {
 
         public IActionResult Profile(string id) {
             if (ThisUser is { } u) {
-                if (string.IsNullOrEmpty(id)) {
-                    return View(u);
-                }
-                var user = session.GetUser(id);
                 ViewData["LoggedIn"] = u.Id;
-                return View(user);
+                return View(string.IsNullOrEmpty(id) ? u : session.GetUser(id));
             }
             Response.Cookies.Delete("Session");
             return Redirect("/");
