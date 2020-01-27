@@ -12,7 +12,7 @@ namespace Codr.Controllers {
         private User? ThisUser {
             get {
                 if (Request.Cookies.TryGetValue("Session", out string id)) {
-                    Thread.Sleep(1000); // what 
+                    Thread.Sleep(1000); // Wait a second for the program to chill out 
                     return session.GetUserBySessionId(id);
                 }
                 return null;
@@ -108,7 +108,7 @@ namespace Codr.Controllers {
         public IActionResult Logout() {
             Response.Cookies.Delete("Session");
             if (ThisUser is { } u) {
-                u.Session = new Guid();
+                u.Session = null;
                 session.Session.SaveChanges();
             }
             return Redirect("/");

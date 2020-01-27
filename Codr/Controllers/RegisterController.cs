@@ -19,6 +19,7 @@ namespace Codr.Controllers {
                 return BadRequest();
 
             var u = new User(email, new HashedPassword(password), firstName, lastName);
+            u.NewSession();
             session.Session.Store(u);
             Response.Cookies.Append("Session", u.Session.ToString(), new CookieOptions {
                 SameSite = SameSiteMode.Lax

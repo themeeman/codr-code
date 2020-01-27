@@ -133,11 +133,11 @@ async function displayComments(postId) {
             console.log(value.depth);
             const node = document.createElement("div");
             node.classList.add("comment");
-            const setHtml = (content, name) =>
-                node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a>at ${value.Created}</p>`;
 
             const name = await getName(value.Author);
             const left = value.depth * 50;
+            const content = value.Content;
+            node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a>at ${value.Created}</p>`;
 
             const button = document.createElement("button");
             button.onclick = () => responding_to[postId] = value.Id;
@@ -146,7 +146,6 @@ async function displayComments(postId) {
 
             node.style.left = `${left}px`;
             node.style.width = `calc(100% - ${left}px)`;
-            setHtml(value.Content, name);
             container.appendChild(node);
         }
     }
