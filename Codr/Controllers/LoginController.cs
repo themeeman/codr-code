@@ -26,9 +26,11 @@ namespace Codr.Controllers {
                 Response.Cookies.Append("Session", u.Session.ToString(), new CookieOptions {
                     SameSite = SameSiteMode.Lax
                 });
-                return Redirect("/App");
+                return Json(true);
+                //return Redirect("/App");
             }
-            return BadRequest();
+            return Json(false);
+            //return BadRequest();
         }
     }
 }
