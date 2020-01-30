@@ -10,6 +10,7 @@ namespace Codr.Data {
                 Urls = new[] {"http://localhost:6969/" },
                 Database = "Codr"
             }.Initialize();
+            
             IndexCreation.CreateIndexes(typeof(Users_Emails).Assembly, store);
             return store;
         });
