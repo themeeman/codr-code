@@ -119,34 +119,27 @@ async function loadComments(postId, depth = 0) {
 }
 
 async function displayComments(postId) {
-    if (document.getElementById(`post-${postId}`)) {
-        const formData = new FormData();
-        formData.append("id", postId);
-        console.log(postId);
-        const comments = await loadComments(postId);
-        console.log(comments);
-        const container = document.getElementById(`comment-container-${postId}`);
-        while (container.firstChild)
-            container.firstChild.remove();
+    const comments = await loadComments(postId);
+    const container = document.getElementById(`comment-container-${postId}`);
+    while (container.firstChild)
+        container.firstChild.remove();
 
-        for (const value of comments) {
-            console.log(value.depth);
-            const node = document.createElement("div");
-            node.classList.add("comment");
+    for (const value of comments) {
+        const node = document.createElement("div");
+        node.classList.add("comment");
 
-            const name = await getName(value.Author);
-            const left = value.depth * 50;
-            const content = value.Content;
-            node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a>at ${value.Created}</p>`;
+        const name = await getName(value.Author);
+        const left = value.depth * 50;
+        const content = value.Content;
+        node.innerHTML = `<p>${content}</p><p>Posted by <a href="/App/Profile?id=${value.Author}">${name}</a> at ${value.Created}</p>`;
 
-            const button = document.createElement("button");
-            button.onclick = () => responding_to[postId] = value.Id;
-            button.innerText = "Reply";
-            node.appendChild(button);
+        const button = document.createElement("button");
+        button.onclick = () => responding_to[postId] = value.Id;
+        button.innerText = "Reply";
+        node.appendChild(button);
 
-            node.style.left = `${left}px`;
-            node.style.width = `calc(100% - ${left}px)`;
-            container.appendChild(node);
-        }
+        node.style.left = `${left}px`;
+        node.style.width = `calc(100% - ${left}px)`;
+        container.appendChild(node);
     }
 }
