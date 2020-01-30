@@ -86,7 +86,6 @@ async function postComment(postId) {
     }).then(() => displayComments(postId));
 }
 
-
 async function getName(userId) {
     if (names_cache[userId])
         return new Promise(resolve => resolve(names_cache[userId]));
